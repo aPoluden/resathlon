@@ -35,7 +35,7 @@ public class FileManager {
      * Return data_set instance
      * @return data_set
      */
-    public Set<String> get_data() {
+    public Set<String> getDataSet () {
         return data_set;
     }
     

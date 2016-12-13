@@ -1,16 +1,14 @@
 package mif.vu.lt.resathlon;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import mif.vu.lt.resathlon.factory.AthleteFactory;
 import mif.vu.lt.resathlon.managers.FileManager;
 import mif.vu.lt.resathlon.managers.ScoreManager;
 import mif.vu.lt.resathlon.managers.XmlManager;
-import mif.vu.lt.resathlon.models.Athlete;
-import mif.vu.lt.resathlon.utils.AthleteFactory;
+import mif.vu.lt.resathlon.models.athletes.Athlete;
 import mif.vu.lt.resathlon.utils.Options;
-import mif.vu.lt.resathlon.utils.Parser;
 
 /**
  * @author apoluden
@@ -21,32 +19,40 @@ public class App {
     public static void main(String[] args) throws Exception {
         
         List<Athlete> athletes = new ArrayList<Athlete>();
+        AthleteFactory f = null;
         
         Options opt = new Options(); 
         opt.init_opt(args);
         
-        // Call help 911
+        // Call 911 :) 
         if (opt.hasFlag(Options.CMD.HELP.flag()) || args.length == 0) {
             Options.printHelp();
         }
         
-        XmlManager xm = new XmlManager(); // Refactor it's horible!!!
-        // TODO support more sport events
-        // Check if Options has file flag
-        if (opt.hasFlag(Options.CMD.FILE.flag())) {
+        // check data input filse provided
+        if (opt.hasFlag(Options.CMD.FILE.flag()) && ((opt.get_params(Options.CMD.FILE.flag()).length != 0))) {
+        	
             FileManager fm = new FileManager();
             fm.process_files(opt.get_params(Options.CMD.FILE.flag()));
-            Parser parser = new Parser(new AthleteFactory());
-            for (String data : fm.get_data()) {
-                Athlete athlete = parser.parse(data);
-                ScoreManager.calculate_score(athlete);
-                athlete.set_total_score(ScoreManager.total_score(athlete));
-                athletes.add(athlete);   
+            
+            // check sport name provided
+        	if (opt.hasFlag(Options.CMD.SPORT.flag()) && ((opt.get_params(Options.CMD.SPORT.flag()).length != 0))) {
+        		String sport = opt.get_params(Options.CMD.SPORT.flag())[0];
+                f = new AthleteFactory(sport);
+        	} else { 
+        		// TODO notify to provide input sports !!!
+        		System.out.println("Sport type not provided");
+        	}                        
+            for (String data : fm.getDataSet()) {
+                Athlete athlete = f.createAthlete(data);
+                ScoreManager.calculateScores(athlete);
+                athletes.add(athlete);
             }
-            ScoreManager.compare_scores_by_event(athletes);
-            ScoreManager.compare_scores(athletes);
-        } else { 
-            throw new FileNotFoundException("Path not provided");
+            ScoreManager.countEventPlace(athletes);
+            ScoreManager.orderAthletes(athletes);
+        } else {
+        	// TODO notify to provide input
+            System.out.println("Input file not provided");
         }
         
         // TODO File format make more generic
@@ -57,6 +63,7 @@ public class App {
                 switch (value.toLowerCase()) {
                     // TODO hardcoded xml
                     case "xml":
+                    	XmlManager xm = new XmlManager(); // Refactor it's horible!!! support multiple output formats
                         for (Athlete atl: athletes) {
                             xm.createElement(atl);
                         }

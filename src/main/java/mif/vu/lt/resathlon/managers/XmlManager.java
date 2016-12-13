@@ -13,8 +13,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import mif.vu.lt.resathlon.models.Athlete;
-import mif.vu.lt.resathlon.models.Params;
+import mif.vu.lt.resathlon.models.Event;
+import mif.vu.lt.resathlon.models.athletes.Athlete;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,43 +45,40 @@ public class XmlManager {
         rootElement.appendChild(el);
         
         Element name_surname = doc.createElement("NAME_SURNAME");
-        name_surname.appendChild(doc.createTextNode(atl.get_name_surname()));
+        name_surname.appendChild(doc.createTextNode(atl.getName()));
         el.appendChild(name_surname);
         
         Element total_score = doc.createElement("TOTAL_SCORE");
-        total_score.appendChild(doc.createTextNode(String.valueOf(atl.get_total_score())));
+        total_score.appendChild(doc.createTextNode(String.valueOf(atl.getTotalScore())));
         el.appendChild(total_score);
         
         el.appendChild(form_competitions(atl));
         
-    }   
+    }
     
     /*
      * Create Competitions Elements
      */
     private Element form_competitions(Athlete atl) {          
           Element competitions = doc.createElement("COMPETITIONS");
-          for (Params param : Params.values()) {
-              
-              Element competition = doc.createElement(param.name());
-              
-              Element points = doc.createElement("POINTS");              
-              points.appendChild(doc.createTextNode(String.valueOf(atl.get_points_by_name(param.name()))));
+          for (Event event: atl.getEvents()) {
+        	  Element competition = doc.createElement(event.getName());
+        	  Element points = doc.createElement("POINTS");
+              points.appendChild(doc.createTextNode(String.valueOf(event.getPoints())));
               competition.appendChild(points);
               
               Element score = doc.createElement("SCORE");
-              score.appendChild(doc.createTextNode(String.valueOf(atl.get_score_by_name(param.name()))));
+              score.appendChild(doc.createTextNode(String.valueOf(event.getScore())));
               competition.appendChild(score);
               
               Element place = doc.createElement("PLACE");
-              Integer[] places = ScoreManager.get_event_place(param.name(), atl.get_score_by_name(param.name()));
+              Integer[] places = event.getPlaces();
               String str = "";
               for (Integer i : places) {
                   str += String.valueOf(i);
               }
               place.appendChild(doc.createTextNode(str));
               competition.appendChild(place);
-              // Place
               
               competitions.appendChild(competition);
           }

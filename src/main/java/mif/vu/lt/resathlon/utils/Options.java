@@ -14,11 +14,12 @@ import java.util.Map;
  */
 public class Options {
     
+	// cmd options
     public enum CMD {
         FILE("--f", "Result file paths. Use space for path argument split"),
         HELP("--h", "Print help"),
         EXTENSION("--e", "Preferable output file extension. Available [XML]"),
-        SPORT("--s", "at-athletics");
+        SPORT("--s", "dc-decathlon");
         
         private final String flag;
         private final String description;
@@ -36,9 +37,21 @@ public class Options {
     private Map<String, HashSet<String>> options = new HashMap<String, HashSet<String>>();
     private String FLAG_REGEX = "--([a-z])";
     private String[] EXTENSIONS = {"xml"};
-    private String[] SPORTS = {"at"};
+    private String[] SPORTS = {"dc"};
     
-    public Options() {}
+    // sport options
+    public enum SPORT {
+    	DECATHLETE("dc");
+    	
+    	private final String sport;
+    	
+    	SPORT(String sport) {
+    		this.sport = sport;
+    	}
+    	
+    	public String sport() {return this.sport;}
+    	
+    }
     
     /*
      * Splits command-line arguments into key value set
@@ -74,7 +87,7 @@ public class Options {
     private boolean validateParam(String flag, String param) {
         if (CMD.EXTENSION.flag().equals(flag)) {
             return Arrays.asList(EXTENSIONS).contains(param);
-        } else if (CMD.FILE.flag().equals(flag)) { 
+        } else if (CMD.FILE.flag().equals(flag)) {
             File file = new File(param);
             return file.exists();
         } else if (CMD.SPORT.flag().equals(flag)) {
