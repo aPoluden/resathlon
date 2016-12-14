@@ -92,7 +92,7 @@ public class XmlManager {
         try {
             transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("data/my_raw.xml"));
+            StreamResult result = new StreamResult(new File("my_raw.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);

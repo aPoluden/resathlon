@@ -1,11 +1,5 @@
 package mif.vu.lt.resathlon;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +10,7 @@ import mif.vu.lt.resathlon.models.athletes.Decathlete;
 import mif.vu.lt.resathlon.utils.Options;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class MainTest {
 	
