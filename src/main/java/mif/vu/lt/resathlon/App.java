@@ -27,6 +27,7 @@ public class App {
         // Call 911 :) 
         if (opt.hasFlag(Options.CMD.HELP.flag()) || args.length == 0) {
             Options.printHelp();
+            return;
         }
         
         // check data input filse provided
@@ -41,40 +42,39 @@ public class App {
                 f = new AthleteFactory(sport);
         	} else { 
         		// TODO notify to provide input sports !!!
-        		System.out.println("Sport type not provided");
+        		System.err.println("Sports attribute required");
+        		System.console().writer().write("Sports attribute required");;
+        		return;
         	}                        
             for (String data : fm.getDataSet()) {
                 Athlete athlete = f.createAthlete(data);
-                ScoreManager.calculateScores(athlete);
+                // calculateScore only responsible for decathelts
+                // TODO refactor
+                ScoreManager.calculateAthleteScores(athlete);
                 athletes.add(athlete);
             }
             ScoreManager.countEventPlace(athletes);
             ScoreManager.orderAthletes(athletes);
         } else {
-        	// TODO notify to provide input
-            System.out.println("Input file not provided");
+            System.err.println("Input file required!");
+    		System.console().writer().write("Input file required!");
+            return;
         }
         
         // TODO File format make more generic
-        if (opt.hasFlag(Options.CMD.EXTENSION.flag())) {
-            // TODO check OUTPUT 
-            String[] opts = opt.get_params(Options.CMD.EXTENSION.flag());
-            for (String value : opts) {
-                switch (value.toLowerCase()) {
-                    // TODO hardcoded xml
-                    case "xml":
-                    	XmlManager xm = new XmlManager(); // Refactor it's horible!!! support multiple output formats
-                        for (Athlete atl: athletes) {
-                            xm.createElement(atl);
-                        }
-                        xm.write_xml();
-                        break;
-                    default:
-                        break;
+        if (opt.hasFlag(Options.CMD.EXTENSION.flag()) && ((opt.get_params(Options.CMD.EXTENSION.flag()).length != 0))) {
+            String extension = opt.get_params(Options.CMD.EXTENSION.flag())[0];
+            if (extension.equals(Options.EXTENSION.XML.extensionName())) { 
+            	XmlManager xm = new XmlManager(); // Refactor it's horible!!! support multiple output formats
+                for (Athlete atl: athletes) {
+                    xm.createElement(atl);
                 }
+                xm.write_xml();
             }
         } else {
-            // TODO output to file default extension - xml
+        	System.err.println("Output file extension required");
+    		System.console().writer().write("Output file extension required");
+        	return;
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import mif.vu.lt.resathlon.models.Event;
 import mif.vu.lt.resathlon.models.Params;
 import mif.vu.lt.resathlon.models.athletes.Athlete;
+import mif.vu.lt.resathlon.models.athletes.Decathlete;
 
 public class ScoreManager {
     
@@ -17,22 +18,11 @@ public class ScoreManager {
     /*
      * Calculate Athlete event score and total score
      */
-    public static void calculateScores(Athlete atl) {
-    	double total_score = 0.0;
-    	for (Event event: atl.getEvents()) {
-    		String event_name = event.getName();
-    		Params param = Params.valueOf(event_name);
-            if (param.units() == "s") {
-            	double score = calculate_time_event(event.getName(), event.getPoints());
-            	total_score += score;
-                event.setScore(score);
-            } else if (param.units() == "m") {
-            	double score = calculate_dist_event(event.getName(), event.getPoints());
-            	total_score += score;
-                event.setScore(score);
-            }
-        }
-    	atl.setTotalScore(total_score);
+    public static void calculateAthleteScores(Athlete atl) {
+    	// Implement score calculation method for different sportsmen type
+    	if (atl.getClass() == Decathlete.class) {
+    		calculateDecathleteScores(atl);
+    	}
     }
     
     /*
@@ -47,6 +37,8 @@ public class ScoreManager {
      */
     public static void countEventPlace(List<Athlete> atls) {
     	for (Athlete athlete: atls) {
+    		
+    		// calculate_scores
     		for (Event event: athlete.getEvents()) {
     			String eventName = event.getName();
     			if (!sortedEventScores.containsKey(eventName)) { 
@@ -77,7 +69,27 @@ public class ScoreManager {
     		}
     	}
     }
-
+    
+    /*
+     * Calculates Decathlete scores
+     */
+    private static void calculateDecathleteScores(Athlete atl) {
+    	double total_score = 0.0;
+    	for (Event event: atl.getEvents()) {
+    		String event_name = event.getName();
+    		Params param = Params.valueOf(event_name);
+            if (param.units() == "s") {
+            	double score = calculate_time_event(event.getName(), event.getPoints());
+            	total_score += score;
+                event.setScore(score);
+            } else if (param.units() == "m") {
+            	double score = calculate_dist_event(event.getName(), event.getPoints());
+            	total_score += score;
+                event.setScore(score);
+            }
+        }
+    	atl.setTotalScore(total_score);
+    }
     /*
      * Calculate time events
      */

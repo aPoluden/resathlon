@@ -53,6 +53,17 @@ public class Options {
     	
     }
     
+    public enum EXTENSION {
+    	XML("xml");
+    	
+    	private final String extensionName;
+    	
+    	EXTENSION(String extensionName) { 
+    		this.extensionName = extensionName;
+    	}
+    	
+    	public String extensionName() {return this.extensionName; }
+    }
     /*
      * Splits command-line arguments into key value set
      */

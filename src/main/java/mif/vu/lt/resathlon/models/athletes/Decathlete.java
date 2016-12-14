@@ -13,7 +13,6 @@ public class Decathlete extends Athlete {
      */
     public Decathlete(String[] dataset) {    	
     	super(dataset);
-    	NAME_SURNAME = dataset[0];
     }
     
     /*
@@ -41,7 +40,7 @@ public class Decathlete extends Athlete {
     }
    
     @Override
-    public Set<Event> createEvents(String[] dataset) {
+    protected Set<Event> createEvents(String[] dataset) {
         String[] only_rslt = new String[10];
         Set<Event> event_set = new HashSet<Event>();
         // Removing name_surname from dataset

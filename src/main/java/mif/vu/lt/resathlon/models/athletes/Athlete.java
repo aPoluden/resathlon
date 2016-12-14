@@ -12,13 +12,14 @@ public abstract class Athlete implements Comparable<Athlete> {
 	protected Set<Event> events;
 	
 	public Athlete(String[] dataset) {
+    	NAME_SURNAME = dataset[0];
 		events = createEvents(dataset);
 	}
 	
 	/*
 	 * returns filled in Event set
 	 */
-	public abstract Set<Event> createEvents(String[] dataset);
+	protected abstract Set<Event> createEvents(String[] dataset);
 	
 	public Set<Event> getEvents() {
 		return this.events;
