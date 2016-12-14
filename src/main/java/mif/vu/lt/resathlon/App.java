@@ -48,12 +48,10 @@ public class App {
         	}                        
             for (String data : fm.getDataSet()) {
                 Athlete athlete = f.createAthlete(data);
-                // calculateScore only responsible for decathelts
-                // TODO refactor
                 ScoreManager.calculateAthleteScores(athlete);
                 athletes.add(athlete);
             }
-            ScoreManager.countEventPlace(athletes);
+            ScoreManager.compareEventPlace(athletes);
             ScoreManager.orderAthletes(athletes);
         } else {
             System.err.println("Input file required!");
@@ -61,7 +59,7 @@ public class App {
             return;
         }
         
-        // TODO File format make more generic
+        // TODO output file extension make more generic
         if (opt.hasFlag(Options.CMD.EXTENSION.flag()) && ((opt.get_params(Options.CMD.EXTENSION.flag()).length != 0))) {
             String extension = opt.get_params(Options.CMD.EXTENSION.flag())[0];
             if (extension.equals(Options.EXTENSION.XML.extensionName())) { 

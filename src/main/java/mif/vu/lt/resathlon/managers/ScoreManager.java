@@ -12,9 +12,7 @@ import mif.vu.lt.resathlon.models.athletes.Athlete;
 import mif.vu.lt.resathlon.models.athletes.Decathlete;
 
 public class ScoreManager {
-    
-    private static Map<String, List<Double>> sortedEventScores  = new HashMap<String, List<Double>>();
-    
+        
     /*
      * Calculate Athlete event score and total score
      */
@@ -29,15 +27,16 @@ public class ScoreManager {
      * Order athletes in list by Total score
      */
     public static void orderAthletes(List<Athlete> atls) {
-        Collections.sort(atls);
+    	// Collections.reverseOrder()
+        Collections.sort(atls, Collections.reverseOrder());
     }
     
     /*
      * Calculate Athlete event places
      */
-    public static void countEventPlace(List<Athlete> atls) {
+    public static void compareEventPlace(List<Athlete> atls) {
+    	Map<String, List<Double>> sortedEventScores  = new HashMap<String, List<Double>>();
     	for (Athlete athlete: atls) {
-    		
     		// calculate_scores
     		for (Event event: athlete.getEvents()) {
     			String eventName = event.getName();

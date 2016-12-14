@@ -5,12 +5,23 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import mif.vu.lt.resathlon.managers.ScoreManager;
+import mif.vu.lt.resathlon.models.Event;
+import mif.vu.lt.resathlon.models.athletes.Athlete;
+import mif.vu.lt.resathlon.models.athletes.Decathlete;
 import mif.vu.lt.resathlon.utils.Options;
 
 import org.junit.Test;
 
-public class OptionTest {
-
+public class MainTest {
+	
+	private String[] dataset = {"Siim Susi", "12.61", "5.00", "9.22", "1.50","60.39", "16.43", "21.60", "2.60", "35.81", "5.25.72"};
+	
+	// Options test
     @Test
     public void opt_test() {
         String PATH = "data/Decathlon_input.txt";
@@ -93,5 +104,45 @@ public class OptionTest {
         assertEquals(0, opt.get_params("--f").length);
     }
     
-    
+	@Test
+	public void model_test() {
+		Athlete athlete = new Decathlete(dataset);
+		assertEquals(10, athlete.getEvents().size());
+		assertEquals("Siim Susi", athlete.getName());
+	}
+	
+	// ScoreManager test
+	@Test
+	public void scoremngr_test() {
+		Integer firstPlace = 1;
+		Athlete athlete1 = new Decathlete(dataset);
+		Athlete athlete2 = new Decathlete(dataset);
+		
+		List<Athlete> athletes = new ArrayList<Athlete>();
+		athletes.add(athlete1);
+		athletes.add(athlete2);
+		
+		assertEquals(0.0, athlete1.getTotalScore(), 0);
+		for (Event event: athlete1.getEvents()) {
+			// index is used in case of similar competition results
+			assertNull(event.getPlaces());
+		}
+		
+		ScoreManager.compareEventPlace(athletes);
+		
+		for (Event event: athlete1.getEvents()) {
+			// index is used in case of similar competition results
+			assertEquals(2, event.getPlaces().length);
+			assertEquals(firstPlace, event.getPlaces()[0]);
+		}
+		
+		ScoreManager.calculateAthleteScores(athlete1);
+		ScoreManager.calculateAthleteScores(athlete2);
+		ScoreManager.compareEventPlace(athletes);
+		
+		for (Event event: athlete1.getEvents()) {
+			// index is used in case of similar competition results
+			assertEquals(2, event.getPlaces().length);
+		}
+	}
 }
