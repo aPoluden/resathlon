@@ -12,7 +12,7 @@ $ java -cp target/jarname.jar mif.vu.lt.resathlon.App --f path/to/input/file --e
 * --h - prints help
 * --e - output file extension, available: xml
 * --s - sport type, available: dc - for decathlon
-* --f - input file path
+* --f - input files paths
 
 **Decathlon input data:**
 Decathlon input file locates in data/Decathlon_input.txt
