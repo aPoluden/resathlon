@@ -36,7 +36,9 @@ public class Options {
     
     private Map<String, HashSet<String>> options = new HashMap<String, HashSet<String>>();
     private String FLAG_REGEX = "--([a-z])";
+    // Fill in custom extension abbreviation
     private String[] EXTENSIONS = {"xml"};
+    // Fill in custom sport abbreviation
     private String[] SPORTS = {"dc"};
     
     // sport options
@@ -52,7 +54,7 @@ public class Options {
     	public String sport() {return this.sport;}
     	
     }
-    
+    // Available extensions
     public enum EXTENSION {
     	XML("xml");
     	

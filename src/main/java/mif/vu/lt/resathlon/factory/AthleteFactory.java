@@ -1,5 +1,7 @@
 package mif.vu.lt.resathlon.factory;
 
+import java.io.IOException;
+
 import mif.vu.lt.resathlon.models.athletes.Athlete;
 import mif.vu.lt.resathlon.utils.DecathleteParser;
 import mif.vu.lt.resathlon.utils.Options;
@@ -9,10 +11,12 @@ public class AthleteFactory {
 	
 	Parser parser;
 	
-	public AthleteFactory(String type) {
-		// Implement other SPORT types
+	public AthleteFactory(String type) throws IOException {
+		// Implement custom SPORT check
     	if (type.equals(Options.SPORT.DECATHLETE.sport())) {
     		parser = new DecathleteParser();
+    	} else { 
+    		throw new IOException("Sport type not supported");
     	}
     }
 

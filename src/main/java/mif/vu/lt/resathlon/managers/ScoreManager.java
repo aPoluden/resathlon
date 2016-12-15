@@ -10,14 +10,18 @@ import mif.vu.lt.resathlon.models.Event;
 import mif.vu.lt.resathlon.models.Params;
 import mif.vu.lt.resathlon.models.athletes.Athlete;
 import mif.vu.lt.resathlon.models.athletes.Decathlete;
-
+/*
+ * Calculates athletes Scores
+ * 
+ */
 public class ScoreManager {
         
     /*
      * Calculate Athlete event score and total score
+     * If more Athletes implemented need to perform custom scorecounters!
      */
     public static void calculateAthleteScores(Athlete atl) {
-    	// Implement score calculation method for different sportsmen type
+    	// Implement score calculation method for custom sports type
     	if (atl.getClass() == Decathlete.class) {
     		calculateDecathleteScores(atl);
     	}
