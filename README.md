@@ -9,10 +9,10 @@ $ java -cp target/jarname.jar mif.vu.lt.resathlon.App --f path/to/input/file --e
  Result file will be my_raw.xml
  
 **Available cmd options:**
---h - prints help
---e - output file extension, available: xml
---s - sport type, available: dc - for decathlon
---f - input file path
+* --h - prints help
+* --e - output file extension, available: xml
+* --s - sport type, available: dc - for decathlon
+* --f - input file path
 
 **Decathlon input data:**
 Decathlon input file locates in data/Decathlon_input.txt
